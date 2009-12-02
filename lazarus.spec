@@ -1,6 +1,6 @@
 Name:           lazarus
 Version:        0.9.28.2
-Release:        %mkrel 1
+Release:        %mkrel 2
 Summary:        Lazarus Component Library and IDE for Freepascal
 Group:          Development/Other
 # GNU Classpath style exception, see COPYING.modifiedLGPL
