@@ -74,7 +74,8 @@ ln -sf ../%{_lib}/%{name}/startlazarus %{buildroot}%{_bindir}/startlazarus
 ln -sf ../%{_lib}/%{name}/lazbuild %{buildroot}%{_bindir}/lazbuild
 
 install -D -p -m 0644 lazarus/tools/install/linux/editoroptions.xml %{buildroot}%{_sysconfdir}/lazarus/editoroptions.xml
-sed 's#/usr/lib/lazarus/#%{_libdir}/%{name}#;s#/\$(FPCVER)##' lazarus/tools/install/linux/environmentoptions.xml > %{buildroot}%{_sysconfdir}/lazarus/environmentoptions.xml
+sed "s#\%LazarusVersion\%##;#/usr/lib/lazarus/#%{_libdir}/%{name}#" lazarus/tools/install/linux/environmentoptions.xml > %{buildroot}%{_sysconfdir}/lazarus/environmentoptions.xml
+sed -i -e "s#/\$(FPCVER)##" %{buildroot}%{_sysconfdir}/lazarus/environmentoptions.xml
 
 chmod 755 %{buildroot}%{_libdir}/%{name}/components/lazreport/tools/localize.sh
 
