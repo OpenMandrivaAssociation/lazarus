@@ -1,5 +1,5 @@
 Name:           lazarus
-Version:        0.9.28
+Version:        0.9.28.2
 Release:        %mkrel 1
 Summary:        Lazarus Component Library and IDE for Freepascal
 Group:          Development/Other
@@ -10,8 +10,16 @@ Source0:        http://download.sourceforge.net/%{name}/%{name}-%{version}-src.t
 patch0:         Makefile_patch.diff
 patch1:         Desktop_patch.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
-BuildRequires:  fpc >= 2.2.0, binutils, gdk-pixbuf-devel, glibc-devel, desktop-file-utils, gtk2-devel
-Requires:       fpc >= 2.2.0, binutils, gdk-pixbuf-devel, gtk+-devel, glibc-devel, gdb
+BuildRequires:  fpc >= 2.2.4
+BuildRequires:  fpc-src >= 2.2.4
+BuildRequires:	desktop-file-utils
+BuildRequires:	gtk2-devel
+Requires:       fpc >= 2.2.4
+Requires:	fpc-src >= 2.2.4
+Requires:	binutils
+Requires:	gtk2-devel
+Requires:	glibc-devel
+Requires:	gdb
 
 %description
 Lazarus is a free and opensource RAD tool for freepascal using the lazarus
@@ -58,7 +66,6 @@ make -C lazarus/install/man INSTALL_MANDIR=%{buildroot}%{_mandir}
 install -D -p -m 0644 lazarus/install/lazarus-mime.xml $LazBuildDir%{buildroot}%{_datadir}/mime/packages/lazarus.xml
 install -D -p -m 0644 lazarus/images/ide_icon48x48.png %{buildroot}%{_datadir}/pixmaps/lazarus.png
 desktop-file-install \
-        --vendor fedora \
         --dir %{buildroot}%{_datadir}/applications \
         lazarus/install/%{name}.desktop
 
@@ -71,6 +78,15 @@ sed 's#/usr/lib/lazarus/#%{_libdir}/%{name}#;s#/\$(FPCVER)##' lazarus/tools/inst
 
 chmod 755 %{buildroot}%{_libdir}/%{name}/components/lazreport/tools/localize.sh
 
+# remove gzipped man pages (uncompressed version being also in the directory, it generates a conflict with the compress_files spec-helper)
+rm -f %{buildroot}%{_mandir}/man1/*.gz
+
+# clean %{_libdir}/%{name}
+pushd %{buildroot}%{_libdir}/%{name}
+rm -f Makefile* *.txt
+rm -rf install
+popd
+
 %clean
 rm -rf %{buildroot}
 
@@ -82,7 +98,7 @@ rm -rf %{buildroot}
 %{_bindir}/startlazarus
 %{_bindir}/lazbuild
 %{_datadir}/pixmaps/lazarus.png
-%{_datadir}/applications/fedora-%{name}.desktop
+%{_datadir}/applications/%{name}.desktop
 %{_datadir}/mime/packages/lazarus.xml
 %dir %{_sysconfdir}/lazarus
 %config(noreplace) %{_sysconfdir}/lazarus/editoroptions.xml
