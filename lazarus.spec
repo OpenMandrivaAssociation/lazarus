@@ -1,6 +1,6 @@
 Name:           lazarus
 Version:        0.9.28.2
-Release:        %mkrel 3
+Release:        %mkrel 4
 Summary:        Lazarus Component Library and IDE for Freepascal
 Group:          Development/Other
 # GNU Classpath style exception, see COPYING.modifiedLGPL
@@ -20,6 +20,7 @@ Requires:	binutils
 Requires:	gtk2-devel
 Requires:	glibc-devel
 Requires:	gdb
+Requires:	make
 
 %description
 Lazarus is a free and opensource RAD tool for freepascal using the lazarus
