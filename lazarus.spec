@@ -1,33 +1,28 @@
+%define prerelease 20101015
+
 Name:           lazarus
-Version:        0.9.28.2
-Release:        %mkrel 5
+Version:        0.9.29.27705
+Release:        %mkrel 1
 Summary:        Lazarus Component Library and IDE for Freepascal
 Group:          Development/Other
+Packager: 	Alexander Kazancev <kazancas@mandriva.ru>
 # GNU Classpath style exception, see COPYING.modifiedLGPL
 License:        GPLv2+ and MPLv1.1 and LGPLv2+ with exceptions
 URL:            http://www.lazarus.freepascal.org/
-Source0:        http://download.sourceforge.net/%{name}/%{name}-%{version}-src.tar.bz2
+Source0:        http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}-%{prerelease}.tar.gz
 patch0:         Makefile_patch.diff
 patch1:         Desktop_patch.diff
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
-BuildRequires:  fpc >= 2.2.4
-BuildRequires:  fpc-src >= 2.2.4
-BuildRequires:	desktop-file-utils
-BuildRequires:	gtk2-devel
-Requires:       fpc >= 2.2.4
-Requires:	fpc-src >= 2.2.4
-Requires:	binutils
-Requires:	gtk2-devel
-Requires:	glibc-devel
-Requires:	gdb
-Requires:	make
+
+BuildRequires: fpc-src >= 2.4, fpc >= 2.4, gdk-pixbuf, gtk+, glibc, gdb, glib-devel, gdk-pixbuf-devel, gtk2-devel, desktop-file-utils
+Requires: fpc-src >= 2.4, fpc >= 2.4, gdk-pixbuf, gtk+, glibc, gdb, glib-devel, gdk-pixbuf-devel, binutils, gtk2-devel, glibc-devel
 
 %description
 Lazarus is a free and opensource RAD tool for freepascal using the lazarus
 component library - LCL, which is also included in this package.
 
 %prep
-%setup -c -q
+%setup -qc
 %patch0 -p0
 %patch1 -p0
 
