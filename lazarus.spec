@@ -5,7 +5,6 @@ Version:        0.9.29.27705
 Release:        %mkrel 1
 Summary:        Lazarus Component Library and IDE for Freepascal
 Group:          Development/Other
-Packager: 	Alexander Kazancev <kazancas@mandriva.ru>
 # GNU Classpath style exception, see COPYING.modifiedLGPL
 License:        GPLv2+ and MPLv1.1 and LGPLv2+ with exceptions
 URL:            http://www.lazarus.freepascal.org/
