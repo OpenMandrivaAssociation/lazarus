@@ -1,17 +1,18 @@
+%define ver 0.9.29
 %define snapshot 29190
 %define reldate 20110125
 
 Name:           lazarus
-Version:        0.9.29
+Version:        %{ver}.%{snapshot}
 Release:        %mkrel 1
 Summary:        Lazarus Component Library and IDE for Freepascal
 Group:          Development/Other
 # GNU Classpath style exception, see COPYING.modifiedLGPL
 License:        GPLv2+ and MPLv1.1 and LGPLv2+ with exceptions
 URL:            http://www.lazarus.freepascal.org/
-Source0:        http://www.hu.freepascal.org/%{name}/%{name}-%{version}-%{snapshot}-%{reldate}-src.tar.bz2
+Source0:        http://www.hu.freepascal.org/%{name}/%{name}-%{ver}-%{snapshot}-%{reldate}-src.tar.bz2
 patch1:         Desktop_patch.diff
-BuildRoot:      %{_tmppath}/%{name}-%{version}.%{snapshot}-%{release}-root
+BuildRoot:      %{_tmppath}/%{name}-%{ver}.%{snapshot}-%{release}-root
 
 BuildRequires: fpc-src >= 2.4.2, fpc >= 2.4.2, gdk-pixbuf, gtk+, glibc, gdb, glib-devel, gdk-pixbuf-devel, gtk2-devel, desktop-file-utils
 Requires: fpc-src >= 2.4.2, fpc >= 2.4.2, gdk-pixbuf, gtk+, glibc, gdb, glib-devel, gdk-pixbuf-devel, binutils, gtk2-devel, glibc-devel
