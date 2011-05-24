@@ -1,6 +1,6 @@
 %define ver 0.9.30.1
-%define snapshot 30041
-%define reldate 20110328
+%define snapshot 30881
+%define reldate 20110524
 
 Name:           lazarus
 Version:        %{ver}.%{snapshot}
