@@ -1,6 +1,6 @@
 %define ver 0.9.30.1
-%define snapshot 30881
-%define reldate 20110524
+%define snapshot 32070
+%define reldate 20110828
 
 Name:           lazarus
 Version:        %{ver}.%{snapshot}
@@ -16,6 +16,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{ver}.%{snapshot}-%{release}-root
 
 BuildRequires: fpc-src >= 2.4.2, fpc >= 2.4.2, gdk-pixbuf, gtk+, glibc, gdb, glib-devel, gdk-pixbuf-devel, gtk2-devel, desktop-file-utils
 Requires: fpc-src >= 2.4.2, fpc >= 2.4.2, gdk-pixbuf, gtk+, glibc, gdb, glib-devel, gdk-pixbuf-devel, binutils, gtk2-devel, glibc-devel
+Requires: jpeg-devel
 
 %description
 Lazarus is a free and opensource RAD tool for freepascal using the lazarus
@@ -77,7 +78,10 @@ cat lazarus/install/man/man1/lazbuild.1 | gzip > %{buildroot}%{_mandir}/man1/laz
 cat lazarus/install/man/man1/lazarus-ide.1 | gzip > %{buildroot}%{_mandir}/man1/lazarus-ide.1.gz
 cat lazarus/install/man/man1/startlazarus.1 | gzip > %{buildroot}%{_mandir}/man1/startlazarus.1.gz
   install lazarus/tools/install/linux/editoroptions.xml %{buildroot}%{_sysconfdir}/lazarus/editoroptions.xml
-cat lazarus/tools/install/linux/environmentoptions.xml | sed -e "s#/usr/lib/lazarus/#$LAZARUSDIR/#" > %{buildroot}%{_sysconfdir}/lazarus/environmentoptions.xml
+# fix fpc and lazarus path  
+install lazarus/tools/install/linux/environmentoptions.xml %{buildroot}%{_sysconfdir}/lazarus/environmentoptions.xml
+sed -i 's/\$(FPCVER)\///g' %{buildroot}%{_sysconfdir}/lazarus/environmentoptions.xml
+sed -i 's/%LazarusVersion%//g' %{buildroot}%{_sysconfdir}/lazarus/environmentoptions.xml
 
 chmod 755 %{buildroot}%{_libdir}/%{name}/components/lazreport/tools/localize.sh
 
