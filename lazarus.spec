@@ -4,7 +4,7 @@
 
 Name:           lazarus
 Version:        %{ver}.%{snapshot}
-Release:        %mkrel 1
+Release:        %mkrel 2
 Summary:        Lazarus Component Library and IDE for Freepascal
 Group:          Development/Other
 # GNU Classpath style exception, see COPYING.modifiedLGPL
@@ -59,7 +59,7 @@ strip lazbuild
 
 %install
 rm -rf %{buildroot}
-LAZARUSDIR=%{_libdir}/%{name}
+LAZARUSDIR=/usr/lib/%{name}
 mkdir -p %{buildroot}$LAZARUSDIR
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_datadir}/pixmaps
@@ -83,13 +83,13 @@ install lazarus/tools/install/linux/environmentoptions.xml %{buildroot}%{_syscon
 sed -i 's/\$(FPCVER)\///g' %{buildroot}%{_sysconfdir}/lazarus/environmentoptions.xml
 sed -i 's/%LazarusVersion%//g' %{buildroot}%{_sysconfdir}/lazarus/environmentoptions.xml
 
-chmod 755 %{buildroot}%{_libdir}/%{name}/components/lazreport/tools/localize.sh
+chmod 755 %{buildroot}/usr/lib/%{name}/components/lazreport/tools/localize.sh
 
 # remove gzipped man pages (uncompressed version being also in the directory, it generates a conflict with the compress_files spec-helper)
 #rm -f %{buildroot}%{_mandir}/man1/*.gz
 
 # clean %{_libdir}/%{name}
-pushd %{buildroot}%{_libdir}/%{name}
+pushd %{buildroot}/usr/lib/%{name}
 rm -f Makefile* *.txt
 rm -rf install
 popd
@@ -98,12 +98,12 @@ popd
 rm -rf %{buildroot}
 
 %post
-%{_libdir}/%{name}/tools/install/rpm/create_gtk1_links.sh
+/usr/lib/%{name}/tools/install/rpm/create_gtk1_links.sh
 
 %files
 %defattr(-,root,root,-)
 %doc lazarus/COPYING* lazarus/README.txt
-%{_libdir}/%{name}
+/usr/lib/%{name}
 %{_bindir}/%{name}-ide
 %{_bindir}/startlazarus
 %{_bindir}/lazbuild
