@@ -4,7 +4,7 @@
 
 Name:           lazarus
 Version:        %{ver}.%{snapshot}
-Release:        %mkrel 2
+Release:        %mkrel 3
 Summary:        Lazarus Component Library and IDE for Freepascal
 Group:          Development/Other
 # GNU Classpath style exception, see COPYING.modifiedLGPL
@@ -46,9 +46,19 @@ rm tools/install/create_lazarus_export_tgz.sh
 
 export FPCDIR=%{_datadir}/fpcsrc/
 fpcmake -Tall
-make tools OPT='-gl'
-make bigide OPT='-gl'
-make lazbuilder OPT='-gl'
+MAKEOPTS="-gl -F1/usr/%{_lib}
+make tools OPT="$MAKEOPTS"
+make bigide OPT="$MAKEOPTS"
+make lazbuilder OPT="$MAKEOPTS"
+
+# build Qt4 interface
+pushd lcl/interfaces/qt
+    %__make all \
+        LCL_PLATFORM=qt \
+        OPT="-dUSE_QT_45 \
+        -dQT_NATIVE_DIALOGS"
+popd
+
 # Add the ability to create gtk2-applications
 export LCL_PLATFORM=gtk2
 make lcl ideintf packager/registration bigidecomponents OPT='-gl'
