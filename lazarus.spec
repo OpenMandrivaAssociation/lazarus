@@ -63,7 +63,7 @@ cd lazarus
 
 export FPCDIR=%{_datadir}/fpcsrc/
 fpcmake -Tall
-MAKEOPTS="-gl -Fl/usr/%{_lib}"
+MAKEOPTS="-gl -gw -Fl/usr/%{_lib}"
 %__make tools OPT="$MAKEOPTS"
 %__make bigide OPT="$MAKEOPTS"
 %__make lazbuilder OPT="$MAKEOPTS"
@@ -78,7 +78,7 @@ popd
 
 # Add the ability to create gtk2-applications
 export LCL_PLATFORM=gtk2
-%__make lcl ideintf packager/registration bigidecomponents OPT='-gl'
+%__make lcl ideintf packager/registration bigidecomponents OPT='-gl -gw'
 export LCL_PLATFORM=
 strip lazarus
 strip startlazarus
