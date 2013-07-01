@@ -5,7 +5,7 @@
 Name:		lazarus
 Version:	%{ver}.%{reldate}
 Release:	6
-Summary:	Lazarus Component Library and IDE for Freepascal
+Summary:	Component Library and IDE for Freepascal
 Group:		Development/Other
 # GNU Classpath style exception, see COPYING.modifiedLGPL
 License:	GPLv2+ and MPLv1.1 and LGPLv2+ with exceptions
