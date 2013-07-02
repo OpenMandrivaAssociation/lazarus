@@ -4,7 +4,7 @@
 
 Name:		lazarus
 Version:	%{ver}.%{reldate}
-Release:	6
+Release:	7
 Summary:	Component Library and IDE for Freepascal
 Group:		Development/Other
 # GNU Classpath style exception, see COPYING.modifiedLGPL
@@ -81,7 +81,6 @@ strip startlazarus
 strip lazbuild
 
 %install
-rm -rf %{buildroot}
 LAZARUSDIR=%{_libdir}/%{name}
 mkdir -p %{buildroot}$LAZARUSDIR
 mkdir -p %{buildroot}%{_bindir}
