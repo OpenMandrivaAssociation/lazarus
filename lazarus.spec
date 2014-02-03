@@ -1,41 +1,33 @@
-%define ver 1.0.1
-%define snapshot 38517
-%define reldate 20120905
-
+Summary:	Lazarus Component Library and IDE for Freepascal
 Name:		lazarus
-Version:	%{ver}.%{reldate}
-Release:	7
-Summary:	Component Library and IDE for Freepascal
-Group:		Development/Other
+Version:	1.0.14
+Release:	1
 # GNU Classpath style exception, see COPYING.modifiedLGPL
 License:	GPLv2+ and MPLv1.1 and LGPLv2+ with exceptions
-URL:		http://www.lazarus.freepascal.org/
-Source0:	http://www.hu.freepascal.org/%{name}/%{name}-%{ver}-%{snapshot}-%{reldate}-src.tar.bz2
-Source1:	%{name}.rpmlintrc
+Group:		Development/Other
+Url:		http://www.lazarus.freepascal.org/
+Source0:	http://sourceforge.net/projects/%{name}/files/Lazarus%20Zip%20_%20GZip/Lazarus%20%{version}/%{name}-%{version}-0.tar.gz
+Source1:	lazarus-miscellaneousoptions
+Source10:	lazarus.rpmlintrc
 Patch1:		Desktop_patch.diff
-
-BuildRequires:	fpc-src >= 2.6.0
-BuildRequires:	fpc >= 2.6.0
-BuildRequires:	gdk-pixbuf
-BuildRequires:	gtk+
-BuildRequires:	glibc
-BuildRequires:	gdb
-BuildRequires:	glib-devel
-BuildRequires:	gdk-pixbuf-devel
-BuildRequires:	gtk2-devel
+# Patch2 is not needed for lazarus 1.1
+Patch2:		lazbuild_1_1.patch
+Patch3:		add_gdb_settings.patch
 BuildRequires:	desktop-file-utils
-Requires:	fpc-src >= 2.6.0
-Requires:	fpc >= 2.6.0
-Requires:	gdk-pixbuf
-Requires:	gtk+
-Requires:	glibc
-Requires:	gdb
-Requires:	glib-devel
-Requires:	gdk-pixbuf-devel
+BuildRequires:	fpc >= 2.6.0
+BuildRequires:	fpc-src >= 2.6.0
+BuildRequires:	gdb
+BuildRequires:	pkgconfig(gdk-pixbuf-2.0)
+BuildRequires:	pkgconfig(glib-2.0)
+BuildRequires:	pkgconfig(gtk+-2.0)
 Requires:	binutils
-Requires:	gtk2-devel
+Requires:	fpc >= 2.6.0
+Requires:	fpc-src >= 2.6.0
+Requires:	gdb
+Requires:	pkgconfig(gdk-pixbuf-2.0)
+Requires:	pkgconfig(glib-2.0)
+Requires:	pkgconfig(gtk+-2.0)
 Requires:	glibc-devel
-Requires:	jpeg-devel
 
 %description
 Lazarus is a free and opensource RAD tool for freepascal using the lazarus
@@ -44,6 +36,8 @@ component library - LCL, which is also included in this package.
 %prep
 %setup -q -c
 %patch1 -p0
+%patch2 -p0
+%patch3 -p0
 
 %build
 cd lazarus
@@ -82,6 +76,7 @@ strip lazbuild
 
 %install
 LAZARUSDIR=%{_libdir}/%{name}
+FPCDIR=%{_datadir}/fpcsrc/
 mkdir -p %{buildroot}$LAZARUSDIR
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_datadir}/pixmaps
@@ -90,46 +85,51 @@ mkdir -p %{buildroot}%{_datadir}/mime/packages
 mkdir -p %{buildroot}%{_mandir}/man1
 mkdir -p %{buildroot}%{_sysconfdir}/lazarus
 cp -a lazarus/* %{buildroot}$LAZARUSDIR/
-  install -m 644 lazarus/images/ide_icon48x48.png %{buildroot}%{_datadir}/pixmaps/lazarus.png
-  install -m 644 lazarus/install/lazarus.desktop %{buildroot}%{_datadir}/applications/lazarus.desktop
-  install -m 644 lazarus/install/lazarus-mime.xml $LazBuildDir%{buildroot}%{_datadir}/mime/packages/lazarus.xml
+install -m 0644 lazarus/images/ide_icon48x48.png %{buildroot}%{_datadir}/pixmaps/lazarus.png
+install -m 0644 lazarus/install/lazarus.desktop %{buildroot}%{_datadir}/applications/lazarus.desktop
+install -m 0644 lazarus/install/lazarus-mime.xml $LazBuildDir%{buildroot}%{_datadir}/mime/packages/lazarus.xml
 ln -sf $LAZARUSDIR/lazarus %{buildroot}%{_bindir}/lazarus-ide
 ln -sf $LAZARUSDIR/startlazarus %{buildroot}%{_bindir}/startlazarus
 ln -sf $LAZARUSDIR/lazbuild %{buildroot}%{_bindir}/lazbuild
 cat lazarus/install/man/man1/lazbuild.1 | gzip > %{buildroot}%{_mandir}/man1/lazbuild.1.gz
 cat lazarus/install/man/man1/lazarus-ide.1 | gzip > %{buildroot}%{_mandir}/man1/lazarus-ide.1.gz
 cat lazarus/install/man/man1/startlazarus.1 | gzip > %{buildroot}%{_mandir}/man1/startlazarus.1.gz
-  install lazarus/tools/install/linux/editoroptions.xml %{buildroot}%{_sysconfdir}/lazarus/editoroptions.xml
-# fix fpc and lazarus path  
+install lazarus/tools/install/linux/editoroptions.xml %{buildroot}%{_sysconfdir}/lazarus/editoroptions.xml
+
+# fix fpc and lazarus path
 install lazarus/tools/install/linux/environmentoptions.xml %{buildroot}%{_sysconfdir}/lazarus/environmentoptions.xml
 sed -i 's/\$(FPCVER)\///g' %{buildroot}%{_sysconfdir}/lazarus/environmentoptions.xml
 sed -i 's/%LazarusVersion%//g' %{buildroot}%{_sysconfdir}/lazarus/environmentoptions.xml
 
 #Fix config path (akdengi)
-sed -i 's#__LAZARUSDIR__#'$LAZARUSDIR'#g' %{buildroot}%{_sysconfdir}/lazarus/environmentoptions.xml
+sed -i 's#__LAZARUSDIR__#'$LAZARUSDIR/'#g' %{buildroot}%{_sysconfdir}/lazarus/environmentoptions.xml
 sed -i 's#__FPCSRCDIR__#'$FPCDIR'#g' %{buildroot}%{_sysconfdir}/lazarus/environmentoptions.xml
 
 chmod 755 %{buildroot}%{_libdir}/%{name}/components/lazreport/tools/localize.sh
 
-# remove gzipped man pages (uncompressed version being also in the directory, it generates a conflict with the compress_files spec-helper)
-#rm -f %{buildroot}%{_mandir}/man1/*.gz
+pushd %{buildroot}%{_libdir}/%{name}
+rm -f *.txt
+rm -rf install
+popd
 
-# clean %{_libdir}/%{name}
-#pushd %{buildroot}%{_libdir}/%{name}
-#rm -f Makefile* *.txt
-#rm -rf install
-#popd
+install -m 755 %{SOURCE1} %{buildroot}%{_bindir}/
 
 %post
 %{_libdir}/%{name}/tools/install/rpm/create_gtk1_links.sh
 
+%postun
+if [ $1 = 0 ]
+then
+rm -rf %{_libdir}/%{name}
+fi
+
 %files
-%defattr(-,root,root,-)
 %doc lazarus/COPYING* lazarus/README.txt
 %{_libdir}/%{name}
 %{_bindir}/%{name}-ide
 %{_bindir}/startlazarus
 %{_bindir}/lazbuild
+%{_bindir}/%{name}-miscellaneousoptions
 %{_datadir}/pixmaps/lazarus.png
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/mime/packages/lazarus.xml
@@ -137,56 +137,4 @@ chmod 755 %{buildroot}%{_libdir}/%{name}/components/lazreport/tools/localize.sh
 %config(noreplace) %{_sysconfdir}/lazarus/editoroptions.xml
 %config(noreplace) %{_sysconfdir}/lazarus/environmentoptions.xml
 %{_mandir}/*/*
-
-
-%changelog
-* Sun Aug 28 2011 Александр Казанцев <kazancas@mandriva.org> 0.9.30.1.32070-1mdv2011.0
-+ Revision: 697267
-- fix bug from non-correct path to fpcsrc and update to new bugfix snapshot
-
-* Tue May 24 2011 Александр Казанцев <kazancas@mandriva.org> 0.9.30.1.30881-1
-+ Revision: 678181
-- svn fix version for new fpc 2.4.4
-
-* Mon Mar 28 2011 Александр Казанцев <kazancas@mandriva.org> 0.9.30.1.30041-1
-+ Revision: 648700
-- new release 0.9.30 (fix snapshot)
-
-* Wed Jan 26 2011 Александр Казанцев <kazancas@mandriva.org> 0.9.29.29190-1
-+ Revision: 633048
--update to 0.9.29-29190 fix snapshot
-
-* Mon Dec 27 2010 Александр Казанцев <kazancas@mandriva.org> 0.9.29.27705-1mdv2011.0
-+ Revision: 625490
-+ rebuild (emptylog)
-
-* Mon Dec 06 2010 Oden Eriksson <oeriksson@mandriva.com> 0.9.28.2-5mdv2011.0
-+ Revision: 612703
-- the mass rebuild of 2010.1 packages
-
-* Fri Jan 29 2010 Jérôme Brenier <incubusss@mandriva.org> 0.9.28.2-4mdv2010.1
-+ Revision: 497877
-- Requires: make
-
-* Thu Dec 03 2009 Jérôme Brenier <incubusss@mandriva.org> 0.9.28.2-3mdv2010.1
-+ Revision: 472753
-- bump release
-- fix both environmentoptions.xml files
-
-* Wed Dec 02 2009 Jérôme Brenier <incubusss@mandriva.org> 0.9.28.2-2mdv2010.1
-+ Revision: 472717
-- fix environmentoptions.xml
-
-* Wed Dec 02 2009 Jérôme Brenier <incubusss@mandriva.org> 0.9.28.2-1mdv2010.1
-+ Revision: 472695
-- version 0.9.8.2
-- fix BuildRequires / Requires
-- fix desktop file
-- remove some duplicates and useless files
-- fix %%files section
-
-  + Funda Wang <fwang@mandriva.org>
-    - sync with fedora's patckage
-    - import lazarus
-
 
