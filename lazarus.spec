@@ -38,8 +38,11 @@ component library - LCL, which is also included in this package.
 %patch1 -p0
 %patch2 -p0
 %patch3 -p0
+mkdir linker
+ln -s %_bindir/ld.bfd linker/ld
 
 %build
+export PATH="`pwd`/linker:$PATH"
 cd lazarus
 # Remove the files for building debian-repositories
 rm -rf debian
@@ -75,6 +78,7 @@ strip startlazarus
 strip lazbuild
 
 %install
+export PATH="`pwd`/linker:$PATH"
 LAZARUSDIR=%{_libdir}/%{name}
 FPCDIR=%{_datadir}/fpcsrc/
 mkdir -p %{buildroot}$LAZARUSDIR
