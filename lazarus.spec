@@ -1,7 +1,7 @@
 Summary:	Lazarus Component Library and IDE for Freepascal
 Name:		lazarus
-Version:	1.0.14
-Release:	5
+Version:	1.4.2
+Release:	1
 # GNU Classpath style exception, see COPYING.modifiedLGPL
 License:	GPLv2+ and MPLv1.1 and LGPLv2+ with exceptions
 Group:		Development/Other
@@ -10,8 +10,6 @@ Source0:	http://sourceforge.net/projects/%{name}/files/Lazarus%20Zip%20_%20GZip/
 Source1:	lazarus-miscellaneousoptions
 Source10:	lazarus.rpmlintrc
 Patch1:		Desktop_patch.diff
-# Patch2 is not needed for lazarus 1.1
-Patch2:		lazbuild_1_1.patch
 Patch3:		add_gdb_settings.patch
 BuildRequires:	desktop-file-utils
 BuildRequires:	fpc >= 2.6.0
@@ -36,13 +34,9 @@ component library - LCL, which is also included in this package.
 %prep
 %setup -q -c
 %patch1 -p0
-%patch2 -p0
 %patch3 -p0
-mkdir linker
-ln -s %_bindir/ld.bfd linker/ld
 
 %build
-export PATH="`pwd`/linker:$PATH"
 cd lazarus
 # Remove the files for building debian-repositories
 rm -rf debian
@@ -71,7 +65,7 @@ make lazbuild OPT="$MAKEOPTS"
 
 # Add the ability to create gtk2-applications
 export LCL_PLATFORM=gtk2
-make packager/registration lazutils lcl ideintf codetools bigidecomponents OPT='-gl -gw'
+make packager/registration lazutils lcl codetools bigidecomponents OPT='-gl -gw'
 export LCL_PLATFORM=
 strip lazarus
 strip startlazarus
