@@ -1,3 +1,5 @@
+%define _disable_lto 1
+
 Summary:	Lazarus Component Library and IDE for Freepascal
 Name:		lazarus
 Version:	1.4.2
