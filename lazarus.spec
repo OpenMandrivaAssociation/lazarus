@@ -2,16 +2,16 @@
 
 Summary:	Lazarus Component Library and IDE for Freepascal
 Name:		lazarus
-Version:	1.4.2
-Release:	2
+Version:	2.0.10
+Release:	1
 # GNU Classpath style exception, see COPYING.modifiedLGPL
 License:	GPLv2+ and MPLv1.1 and LGPLv2+ with exceptions
 Group:		Development/Other
 Url:		http://www.lazarus.freepascal.org/
-Source0:	http://sourceforge.net/projects/%{name}/files/Lazarus%20Zip%20_%20GZip/Lazarus%20%{version}/%{name}-%{version}-0.tar.gz
+Source0:	http://sourceforge.net/projects/%{name}/files/Lazarus%20Zip%20_%20GZip/Lazarus%20%{version}/%{name}-%{version}-2.tar.gz
 Source1:	lazarus-miscellaneousoptions
 Source10:	lazarus.rpmlintrc
-Patch1:		Desktop_patch.diff
+#Patch1:		Desktop_patch.diff
 Patch3:		add_gdb_settings.patch
 BuildRequires:	desktop-file-utils
 BuildRequires:	fpc >= 2.6.0
@@ -35,7 +35,7 @@ component library - LCL, which is also included in this package.
 
 %prep
 %setup -q -c
-%patch1 -p0
+#patch1 -p0
 %patch3 -p0
 
 %build
@@ -91,10 +91,9 @@ install -m 0644 lazarus/install/lazarus-mime.xml $LazBuildDir%{buildroot}%{_data
 ln -sf $LAZARUSDIR/lazarus %{buildroot}%{_bindir}/lazarus-ide
 ln -sf $LAZARUSDIR/startlazarus %{buildroot}%{_bindir}/startlazarus
 ln -sf $LAZARUSDIR/lazbuild %{buildroot}%{_bindir}/lazbuild
-cat lazarus/install/man/man1/lazbuild.1 | gzip > %{buildroot}%{_mandir}/man1/lazbuild.1.gz
-cat lazarus/install/man/man1/lazarus-ide.1 | gzip > %{buildroot}%{_mandir}/man1/lazarus-ide.1.gz
-cat lazarus/install/man/man1/startlazarus.1 | gzip > %{buildroot}%{_mandir}/man1/startlazarus.1.gz
-install lazarus/tools/install/linux/editoroptions.xml %{buildroot}%{_sysconfdir}/lazarus/editoroptions.xml
+cat lazarus/install/man/man1/lazbuild.1 > %{buildroot}%{_mandir}/man1/lazbuild.1
+cat lazarus/install/man/man1/lazarus-ide.1 > %{buildroot}%{_mandir}/man1/lazarus-ide.1
+cat lazarus/install/man/man1/startlazarus.1 > %{buildroot}%{_mandir}/man1/startlazarus.1
 
 # fix fpc and lazarus path
 install lazarus/tools/install/linux/environmentoptions.xml %{buildroot}%{_sysconfdir}/lazarus/environmentoptions.xml
@@ -134,7 +133,5 @@ fi
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/mime/packages/lazarus.xml
 %dir %{_sysconfdir}/lazarus
-%config(noreplace) %{_sysconfdir}/lazarus/editoroptions.xml
 %config(noreplace) %{_sysconfdir}/lazarus/environmentoptions.xml
 %{_mandir}/*/*
-
