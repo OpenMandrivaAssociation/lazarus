@@ -17,6 +17,7 @@ BuildRequires:	desktop-file-utils
 BuildRequires:	fpc >= 2.6.0
 BuildRequires:	fpc-src >= 2.6.0
 BuildRequires:	gdb
+BuildRequires:	qmake5
 BuildRequires:	pkgconfig(Qt5Core)
 BuildRequires:	pkgconfig(Qt5Gui)
 BuildRequires:	pkgconfig(Qt5Widgets)
