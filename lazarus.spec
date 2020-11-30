@@ -17,16 +17,14 @@ BuildRequires:	desktop-file-utils
 BuildRequires:	fpc >= 2.6.0
 BuildRequires:	fpc-src >= 2.6.0
 BuildRequires:	gdb
-BuildRequires:	pkgconfig(gdk-pixbuf-2.0)
-BuildRequires:	pkgconfig(glib-2.0)
-BuildRequires:	pkgconfig(gtk+-2.0)
+BuildRequires:	pkgconfig(Qt5Core)
+BuildRequires:	pkgconfig(Qt5Gui)
+BuildRequires:	pkgconfig(Qt5Widgets)
+BuildRequires:	pkgconfig(Qt5X11Extras)
 Requires:	binutils
 Requires:	fpc >= 2.6.0
 Requires:	fpc-src >= 2.6.0
 Requires:	gdb
-Requires:	pkgconfig(gdk-pixbuf-2.0)
-Requires:	pkgconfig(glib-2.0)
-Requires:	pkgconfig(gtk+-2.0)
 Requires:	glibc-devel
 
 %description
@@ -57,26 +55,45 @@ rm tools/install/create_fpc_tgz_from_local_dir.sh
 rm tools/install/create_lazarus_export_tgz.sh 
 
 export FPCDIR=%{_datadir}/fpcsrc/
+
+export LCL_PLATFORM=qt5
+pushd lcl/interfaces/qt5/cbindings/
+%{_libdir}/qt5/bin/qmake
+%make_build
+export LD_LIBRARY_PATH=$(pwd):$LD_LIBRARY_PATH
+QTLCL="$(pwd)"
+popd
+
 fpcmake -Tall
 
-MAKEOPTS="-gl -gw -Fl/usr/%{_lib}"
+cd components
+fpcmake -Tall
+cd ..
+
+MAKEOPTS="-gl -gw -Fl/usr/%{_lib} -Fl${QTLCL}"
 
 make bigide OPT="$MAKEOPTS"
 make tools OPT="$MAKEOPTS"
 make lazbuild OPT="$MAKEOPTS"
 
 # Add the ability to create gtk2-applications
-export LCL_PLATFORM=gtk2
-make packager/registration lazutils lcl codetools bigidecomponents OPT='-gl -gw'
-export LCL_PLATFORM=
-strip lazarus
-strip startlazarus
-strip lazbuild
+#export LCL_PLATFORM=gtk2
+make packager/registration lazutils lcl codetools bigidecomponents OPT="$MAKEOPTS"
+#export LCL_PLATFORM=
+#strip lazarus
+#strip startlazarus
+#strip lazbuild
 
 %install
 export PATH="`pwd`/linker:$PATH"
 LAZARUSDIR=%{_libdir}/%{name}
 FPCDIR=%{_datadir}/fpcsrc/
+
+export LCL_PLATFORM=qt5
+pushd lazarus/lcl/interfaces/qt5/cbindings/
+%make_install INSTALL_ROOT="%{buildroot}"
+popd
+
 mkdir -p %{buildroot}$LAZARUSDIR
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_datadir}/pixmaps
@@ -89,11 +106,10 @@ install -m 0644 lazarus/images/ide_icon48x48.png %{buildroot}%{_datadir}/pixmaps
 install -m 0644 lazarus/install/lazarus.desktop %{buildroot}%{_datadir}/applications/lazarus.desktop
 install -m 0644 lazarus/install/lazarus-mime.xml $LazBuildDir%{buildroot}%{_datadir}/mime/packages/lazarus.xml
 ln -sf $LAZARUSDIR/lazarus %{buildroot}%{_bindir}/lazarus-ide
+ln -sf $LAZARUSDIR/lazarus %{buildroot}%{_bindir}/lazarus
 ln -sf $LAZARUSDIR/startlazarus %{buildroot}%{_bindir}/startlazarus
 ln -sf $LAZARUSDIR/lazbuild %{buildroot}%{_bindir}/lazbuild
-cat lazarus/install/man/man1/lazbuild.1 > %{buildroot}%{_mandir}/man1/lazbuild.1
-cat lazarus/install/man/man1/lazarus-ide.1 > %{buildroot}%{_mandir}/man1/lazarus-ide.1
-cat lazarus/install/man/man1/startlazarus.1 > %{buildroot}%{_mandir}/man1/startlazarus.1
+cp lazarus/install/man/man1/*.1 %{buildroot}%{_mandir}/man1/
 
 # fix fpc and lazarus path
 install lazarus/tools/install/linux/environmentoptions.xml %{buildroot}%{_sysconfdir}/lazarus/environmentoptions.xml
@@ -119,16 +135,18 @@ install -m 755 %{SOURCE1} %{buildroot}%{_bindir}/
 %postun
 if [ $1 = 0 ]
 then
-rm -rf %{_libdir}/%{name}
+	rm -rf %{_libdir}/%{name}
 fi
 
 %files
 %doc lazarus/COPYING* lazarus/README.txt
 %{_libdir}/%{name}
+%{_bindir}/%{name}
 %{_bindir}/%{name}-ide
 %{_bindir}/startlazarus
 %{_bindir}/lazbuild
 %{_bindir}/%{name}-miscellaneousoptions
+%{_libdir}/libQt5Pas.so*
 %{_datadir}/pixmaps/lazarus.png
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/mime/packages/lazarus.xml
