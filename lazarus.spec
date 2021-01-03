@@ -39,6 +39,9 @@ component library - LCL, which is also included in this package.
 #patch1 -p0
 %patch3 -p0
 
+# test
+cat /etc/fpc.cfg
+
 %build
 cd lazarus
 # Remove the files for building debian-repositories
