@@ -2,13 +2,13 @@
 
 Summary:	Lazarus Component Library and IDE for Freepascal
 Name:		lazarus
-Version:	2.0.10
+Version:	2.0.12
 Release:	1
 # GNU Classpath style exception, see COPYING.modifiedLGPL
 License:	GPLv2+ and MPLv1.1 and LGPLv2+ with exceptions
 Group:		Development/Other
 Url:		http://www.lazarus.freepascal.org/
-Source0:	http://sourceforge.net/projects/%{name}/files/Lazarus%20Zip%20_%20GZip/Lazarus%20%{version}/%{name}-%{version}-2.tar.gz
+Source0:	http://sourceforge.net/projects/%{name}/files/Lazarus%20Zip%20_%20GZip/Lazarus%20%{version}/%{name}-%{version}.tar.gz
 Source1:	lazarus-miscellaneousoptions
 Source10:	lazarus.rpmlintrc
 #Patch1:		Desktop_patch.diff
