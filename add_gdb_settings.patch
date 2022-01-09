@@ -1,14 +1,14 @@
---- ./lazarus/tools/install/linux/environmentoptions.xml.orig	2012-08-28 17:38:35.000000000 +0000
-+++ ./lazarus/tools/install/linux/environmentoptions.xml	2012-10-12 12:33:19.000000000 +0000
-@@ -31,5 +31,15 @@
-         <Item2 Value="/var/tmp/"/>
-       </History>
-     </TestBuildDirectory>
+diff -up lazarus-2.2.0/lazarus/tools/install/linux/environmentoptions.xml.p3~ lazarus-2.2.0/lazarus/tools/install/linux/environmentoptions.xml
+--- lazarus-2.2.0/lazarus/tools/install/linux/environmentoptions.xml.p3~	2022-01-09 15:04:24.933142382 +0100
++++ lazarus-2.2.0/lazarus/tools/install/linux/environmentoptions.xml	2022-01-09 15:07:58.825559502 +0100
+@@ -37,5 +37,14 @@
+         <Config ConfigName="Gdb" ConfigClass="TGDBMIDebugger" DebuggerFilename="/usr/bin/gdb"/>
+       </Configs>
+     </Debugger>
 +    <DebuggerFilename Value="/usr/bin/gdb">
-+      <History Count="3">
++      <History Count="2">
 +        <Item1 Value="/usr/bin/gdb"/>
 +        <Item2 Value="/usr/local/bin/gdb"/>
-+        <Item3 Value="/opt/fpc/gdb"/>
 +      </History>
 +    </DebuggerFilename> 
 +    <Debugger Class="TGDBMIDebugger" EventLogLineLimit="100">
