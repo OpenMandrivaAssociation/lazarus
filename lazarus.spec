@@ -1,8 +1,10 @@
+%define libname	%mklibname Qt5Pas
+
 %define _disable_lto 1
 
 Summary:	Lazarus Component Library and IDE for Freepascal
 Name:		lazarus
-Version:	2.2.0
+Version:	2.2.2
 Release:	1
 # GNU Classpath style exception, see COPYING.modifiedLGPL
 License:	GPLv2+ and MPLv1.1 and LGPLv2+ with exceptions
@@ -24,6 +26,7 @@ BuildRequires:	pkgconfig(Qt5Network)
 BuildRequires:	pkgconfig(Qt5Widgets)
 BuildRequires:	pkgconfig(Qt5PrintSupport)
 BuildRequires:	pkgconfig(Qt5X11Extras)
+Requires:	%{libname} = %{version}-%{release}
 Requires:	binutils
 Requires:	fpc >= 2.6.0
 Requires:	fpc-src >= 2.6.0
@@ -33,6 +36,15 @@ Requires:	glibc-devel
 %description
 Lazarus is a free and opensource RAD tool for freepascal using the lazarus
 component library - LCL, which is also included in this package.
+
+%package -n	%{libname}
+Summary:	Free Pascal Qt5 binding
+Group:		System/Libraries
+
+%description -n	%{libname}
+The Free Pascal Qt5 binding that allows Free Pascal
+to interface with the C++ Library Qt.
+
 
 %prep
 %setup -q -c
@@ -152,10 +164,14 @@ fi
 %{_bindir}/startlazarus
 %{_bindir}/lazbuild
 %{_bindir}/%{name}-miscellaneousoptions
-%{_libdir}/libQt5Pas.so*
+%{_libdir}/libQt5Pas.so
+%exclude %{_libdir}/libQt5Pas.so.*
 %{_datadir}/pixmaps/lazarus.png
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/mime/packages/lazarus.xml
 %dir %{_sysconfdir}/lazarus
 %config(noreplace) %{_sysconfdir}/lazarus/environmentoptions.xml
 %{_mandir}/*/*
+
+%files -n %{libname}
+%{_libdir}/libQt5Pas.so.*
