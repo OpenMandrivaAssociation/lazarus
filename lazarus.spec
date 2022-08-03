@@ -164,6 +164,7 @@ fi
 %{_bindir}/startlazarus
 %{_bindir}/lazbuild
 %{_bindir}/%{name}-miscellaneousoptions
+%{_libdir}/libQt5Pas.so
 %exclude %{_libdir}/libQt5Pas.so.*
 %{_datadir}/pixmaps/lazarus.png
 %{_datadir}/applications/%{name}.desktop
@@ -171,7 +172,6 @@ fi
 %dir %{_sysconfdir}/lazarus
 %config(noreplace) %{_sysconfdir}/lazarus/environmentoptions.xml
 %{_mandir}/*/*
-
 
 %files -n %{libname}
 %{_libdir}/libQt5Pas.so.*
