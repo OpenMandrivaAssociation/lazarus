@@ -1,0 +1,14 @@
+diff -up lazarus-2.2.6/lazarus/lcl/interfaces/qt5/cbindings/qt5.pas.omv~ lazarus-2.2.6/lazarus/lcl/interfaces/qt5/cbindings/qt5.pas
+diff -up lazarus-2.2.6/lazarus/lcl/interfaces/qt5/cbindings/src/qapplication_c.cpp.omv~ lazarus-2.2.6/lazarus/lcl/interfaces/qt5/cbindings/src/qapplication_c.cpp
+--- lazarus-2.2.6/lazarus/lcl/interfaces/qt5/cbindings/src/qapplication_c.cpp.omv~	2023-08-20 13:43:29.061942121 +0200
++++ lazarus-2.2.6/lazarus/lcl/interfaces/qt5/cbindings/src/qapplication_c.cpp	2023-08-20 13:45:04.754942339 +0200
+@@ -13,6 +13,9 @@
+ 
+ QApplicationH QApplication_Create(int* argc, char** argv, int AnonParam3)
+ {
++	// FreePascal's Qt bindings crash on startup on Wayland, but
++	// the xcb backend works fine even under XWayland
++	setenv("QT_QPA_PLATFORM", "xcb", 1);
+ 	return (QApplicationH) new QApplication(*(int*)argc, argv, AnonParam3);
+ }
+ 
