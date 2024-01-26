@@ -5,7 +5,7 @@
 Summary:	Lazarus Component Library and IDE for Freepascal
 Name:		lazarus
 Version:	3.0
-Release:	2
+Release:	1
 # GNU Classpath style exception, see COPYING.modifiedLGPL
 License:	GPLv2+ and MPLv1.1 and LGPLv2+ with exceptions
 Group:		Development/Other
@@ -95,7 +95,7 @@ make lazbuild OPT="$MAKEOPTS"
 
 # Add the ability to create gtk2-applications
 #export LCL_PLATFORM=gtk2
-make packager/registration lazutils lcl codetools bigidecomponents OPT="$MAKEOPTS"
+make packager/registration lcl codetools bigidecomponents OPT="$MAKEOPTS"
 #export LCL_PLATFORM=
 #strip lazarus
 #strip startlazarus
