@@ -18,6 +18,7 @@ Source10:	lazarus.rpmlintrc
 #Patch1:		Desktop_patch.diff
 Patch0:		lazarus-2.2.6-fix-crash-on-startup-in-wayland.patch
 Patch3:		add_gdb_settings.patch
+Patch4:		lazarus-qt6.7.patch
 BuildRequires:	desktop-file-utils
 BuildRequires:	fpc >= 2.6.0
 BuildRequires:	fpc-src >= 2.6.0
