@@ -1,4 +1,4 @@
-%define libname	%mklibname Qt5Pas
+%define libname	%mklibname Qt6Pas
 
 %global __provides_exclude_from ^%{_libdir}/lazarus/lcl/interfaces/.*\\.so.*$
 
@@ -6,8 +6,8 @@
 
 Summary:	Lazarus Component Library and IDE for Freepascal
 Name:		lazarus
-Version:	2.2.6
-Release:	3
+Version:	3.2
+Release:	1
 # GNU Classpath style exception, see COPYING.modifiedLGPL
 License:	GPLv2+ and MPLv1.1 and LGPLv2+ with exceptions
 Group:		Development/Other
@@ -22,13 +22,12 @@ BuildRequires:	desktop-file-utils
 BuildRequires:	fpc >= 2.6.0
 BuildRequires:	fpc-src >= 2.6.0
 BuildRequires:	gdb
-BuildRequires:	qmake5
-BuildRequires:	pkgconfig(Qt5Core)
-BuildRequires:	pkgconfig(Qt5Gui)
-BuildRequires:	pkgconfig(Qt5Network)
-BuildRequires:	pkgconfig(Qt5Widgets)
-BuildRequires:	pkgconfig(Qt5PrintSupport)
-BuildRequires:	pkgconfig(Qt5X11Extras)
+BuildRequires:	qmake-qt6
+BuildRequires:	pkgconfig(Qt6Core)
+BuildRequires:	pkgconfig(Qt6Gui)
+BuildRequires:	pkgconfig(Qt6Network)
+BuildRequires:	pkgconfig(Qt6Widgets)
+BuildRequires:	pkgconfig(Qt6PrintSupport)
 Requires:	%{libname} = %{version}-%{release}
 Requires:	binutils
 Requires:	fpc >= 2.6.0
@@ -41,11 +40,11 @@ Lazarus is a free and opensource RAD tool for freepascal using the lazarus
 component library - LCL, which is also included in this package.
 
 %package -n	%{libname}
-Summary:	Free Pascal Qt5 binding
+Summary:	Free Pascal Qt6 binding
 Group:		System/Libraries
 
 %description -n	%{libname}
-The Free Pascal Qt5 binding that allows Free Pascal
+The Free Pascal Qt6 binding that allows Free Pascal
 to interface with the C++ Library Qt.
 
 
@@ -75,9 +74,9 @@ rm tools/install/create_lazarus_export_tgz.sh
 
 export FPCDIR=%{_datadir}/fpcsrc/
 
-export LCL_PLATFORM=qt5
-pushd lcl/interfaces/qt5/cbindings/
-%{_libdir}/qt5/bin/qmake
+export LCL_PLATFORM=qt6
+pushd lcl/interfaces/qt6/cbindings/
+%{_libdir}/qt6/bin/qmake
 %make_build
 export LD_LIBRARY_PATH=$(pwd):$LD_LIBRARY_PATH
 QTLCL="$(pwd)"
@@ -95,9 +94,7 @@ make bigide OPT="$MAKEOPTS"
 make tools OPT="$MAKEOPTS"
 make lazbuild OPT="$MAKEOPTS"
 
-# Add the ability to create gtk2-applications
-#export LCL_PLATFORM=gtk2
-make packager/registration lazutils lcl codetools bigidecomponents OPT="$MAKEOPTS"
+make registration lcl bigidecomponents OPT="$MAKEOPTS"
 #export LCL_PLATFORM=
 #strip lazarus
 #strip startlazarus
@@ -108,8 +105,8 @@ export PATH="`pwd`/linker:$PATH"
 LAZARUSDIR=%{_libdir}/%{name}
 FPCDIR=%{_datadir}/fpcsrc/
 
-export LCL_PLATFORM=qt5
-pushd lazarus/lcl/interfaces/qt5/cbindings/
+export LCL_PLATFORM=qt6
+pushd lazarus/lcl/interfaces/qt6/cbindings/
 %make_install INSTALL_ROOT="%{buildroot}"
 popd
 
@@ -148,8 +145,10 @@ popd
 
 install -m 755 %{SOURCE1} %{buildroot}%{_bindir}/
 
-%post
-%{_libdir}/%{name}/tools/install/rpm/create_gtk1_links.sh
+# use a standard lib dir or we cant compile
+rm -f %{buildroot}%{_libdir}/qt6/lib/libQt6Pas.so
+ln -s %{_libdir}/qt6/lib/libQt6Pas.so.6 %{buildroot}%{_libdir}/libQt6Pas.so
+
 
 %postun
 if [ $1 = 0 ]
@@ -165,8 +164,8 @@ fi
 %{_bindir}/startlazarus
 %{_bindir}/lazbuild
 %{_bindir}/%{name}-miscellaneousoptions
-%{_libdir}/libQt5Pas.so
-%exclude %{_libdir}/libQt5Pas.so.*
+%{_libdir}/libQt6Pas.so
+%exclude %{_libdir}/qt6/lib/libQt6Pas.so.*
 %{_datadir}/pixmaps/lazarus.png
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/mime/packages/lazarus.xml
@@ -175,4 +174,4 @@ fi
 %{_mandir}/*/*
 
 %files -n %{libname}
-%{_libdir}/libQt5Pas.so.*
+%{_libdir}/qt6/lib/libQt6Pas.so.*
