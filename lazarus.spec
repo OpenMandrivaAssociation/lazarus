@@ -1,5 +1,7 @@
 %define libname	%mklibname Qt5Pas
 
+%global __provides_exclude_from ^%{_libdir}/lazarus/lcl/interfaces/.*\\.so.*$
+
 %define _disable_lto 1
 
 Summary:	Lazarus Component Library and IDE for Freepascal
