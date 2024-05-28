@@ -6,8 +6,8 @@
 
 Summary:	Lazarus Component Library and IDE for Freepascal
 Name:		lazarus
-Version:	3.2
-Release:	2
+Version:	3.4
+Release:	1
 # GNU Classpath style exception, see COPYING.modifiedLGPL
 License:	GPLv2+ and MPLv1.1 and LGPLv2+ with exceptions
 Group:		Development/Other
@@ -18,7 +18,6 @@ Source10:	lazarus.rpmlintrc
 #Patch1:		Desktop_patch.diff
 Patch0:		lazarus-2.2.6-fix-crash-on-startup-in-wayland.patch
 Patch3:		add_gdb_settings.patch
-Patch4:		lazarus-qt6.7.patch
 BuildRequires:	desktop-file-utils
 BuildRequires:	fpc >= 2.6.0
 BuildRequires:	fpc-src >= 2.6.0
