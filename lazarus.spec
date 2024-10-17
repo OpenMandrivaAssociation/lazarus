@@ -11,7 +11,7 @@ Release:	1
 # GNU Classpath style exception, see COPYING.modifiedLGPL
 License:	GPLv2+ and MPLv1.1 and LGPLv2+ with exceptions
 Group:		Development/Other
-Url:		http://www.lazarus-ide.org/
+Url:		https://www.lazarus-ide.org/
 Source0:	http://sourceforge.net/projects/%{name}/files/Lazarus%20Zip%20_%20GZip/Lazarus%20%{version}/%{name}-%{version}-0.tar.gz
 Source1:	lazarus-miscellaneousoptions
 Source10:	lazarus.rpmlintrc
